@@ -1,0 +1,11 @@
+import { Router } from "express";
+import { registerUser,verifyOtpAndCreateUser,loginUser,logoutUser,currentUser ,getUserProfile} from "../controllers/user.js";
+import verifyJWT from "../middlewares/auth.js";
+const userRouter =Router();
+userRouter.route("/registerUser").post(registerUser);
+userRouter.route("/verifyOtp").post(verifyOtpAndCreateUser);
+userRouter.route("/login").post(loginUser);
+userRouter.route("/logout").post(verifyJWT,logoutUser);
+userRouter.route("/currentUser").get(verifyJWT,currentUser);
+userRouter.route("/profile").get( verifyJWT, getUserProfile);
+export default userRouter;
