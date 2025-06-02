@@ -48,7 +48,7 @@ app.listen(process.env.PORT ,()=>{
 
 
 import userRouter from "./routes/user.js";
-app.use("/api/user", userRouter);
+app.use("/api/users", userRouter);
 
 import productRouter from "./routes/product.js";
 app.use("/api/products", productRouter);
