@@ -12,7 +12,6 @@ const notificationRouter = Router();
 
 notificationRouter.use(verifyJWT);
 
-
 notificationRouter.route("/")
   .post(logNotification); // Endpoint to log a notification
 notificationRouter.route("/").get(getAllNotifications); // Endpoint to get all notifications

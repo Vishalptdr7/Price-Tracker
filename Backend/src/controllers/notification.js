@@ -1,4 +1,4 @@
-import NotificationLog from "../models/notification.js";
+import Notification from "../models/notification.js"
 import { User } from "../models/User.js";
 import Product from "../models/product.js";
 
@@ -6,7 +6,9 @@ import Product from "../models/product.js";
 // @route   POST /api/notifications
 export const logNotification = async (req, res) => {
   try {
-    const { userId, productId, message, method } = req.body;
+    const userId=req.user._id
+    console.log(userId);
+    const {  productId, message, method } = req.body;
 
     const user = await User.findById(userId);
     const product = await Product.findById(productId);
@@ -15,7 +17,7 @@ export const logNotification = async (req, res) => {
       return res.status(404).json({ message: "User or Product not found" });
     }
 
-    const log = await NotificationLog.create({
+    const log = await Notification.create({
       user: userId,
       product: productId,
       message,
@@ -32,7 +34,7 @@ export const logNotification = async (req, res) => {
 // @route   GET /api/notifications
 export const getAllNotifications = async (req, res) => {
   try {
-    const logs = await NotificationLog.find()
+    const logs = await Notification.find()
       .populate("user", "name email")
       .populate("product", "title");
 
@@ -47,8 +49,9 @@ export const getAllNotifications = async (req, res) => {
 export const getNotificationsByUser = async (req, res) => {
   try {
     const { userId } = req.params;
+    console.log(userId);
 
-    const logs = await NotificationLog.find({ user: userId })
+    const logs = await Notification.find({ user: userId })
       .populate("product", "title")
       .sort({ sentAt: -1 });
 
@@ -64,7 +67,7 @@ export const getNotificationsByProduct = async (req, res) => {
   try {
     const { productId } = req.params;
 
-    const logs = await NotificationLog.find({ product: productId })
+    const logs = await Notification.find({ product: productId })
       .populate("user", "name email")
       .sort({ sentAt: -1 });
 
@@ -78,7 +81,7 @@ export const getNotificationsByProduct = async (req, res) => {
 // @route   DELETE /api/notifications
 export const deleteAllNotifications = async (req, res) => {
   try {
-    const result = await NotificationLog.deleteMany();
+    const result = await Notification.deleteMany();
     res.status(200).json({ message: `Deleted ${result.deletedCount} logs.` });
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -12,8 +12,8 @@ const priceHistoryRouter = Router();
 priceHistoryRouter.use(verifyJWT);
 
 priceHistoryRouter.route("/add").post(addPriceEntry);
-priceHistoryRouter.route("/product/:productId").get(getPriceHistoryByProduct);
-priceHistoryRouter.route("/product/:productId/latest").get(getLatestPriceForProduct);
-priceHistoryRouter.route("/product/:productId").delete(deletePriceHistoryForProduct);
+priceHistoryRouter.route("/:productId").get(getPriceHistoryByProduct);
+priceHistoryRouter.route("/:productId/latest").get(getLatestPriceForProduct);
+priceHistoryRouter.route("/:productId").delete(deletePriceHistoryForProduct);
 
 export default priceHistoryRouter;

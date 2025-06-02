@@ -36,24 +36,27 @@ import { User
    //   //check for image,check for avatar
    //   //upload image
    const { email, mobileNo, password, fullname } = req.body;
-
+   console.log(email, mobileNo, password, fullname);
    if (fullname === "") {
      throw new ApiError(400, "Full Name is required");
    }
 
-   if (email === "") {
+   if (!email?.trim()) {
      throw new ApiError(400, "Email is required");
    }
+  
    
    
-
+  if (mobileNo === "") {
+     throw new ApiError(400, "Mobile Number is required");
+   }
    
    if (password === "") {
      throw new ApiError(400, "Password is required");
    }
 
    const exist = await User.findOne({
-     $or: [{ email }, { username }],
+    email:email
    });
    if (exist) {
      throw new ApiError(400, "User already exists");
@@ -74,7 +77,7 @@ import { User
      service: "gmail",
      auth: {
        user: "patidarvishal233@gmail.com",
-       pass: "biampgpfzaqlnwwp",
+       pass: "dhjplfofzgkmwfmj",
      },
    });
 
@@ -89,8 +92,10 @@ import { User
    try {
      await mailTransporter.sendMail(mailDetails);
    } catch (err) {
+     console.error("Email send error:", err); // Add this
      throw new ApiError(500, "Failed to send OTP email");
    }
+  
 
    const tempUser = await TempUser.create({
      fullname,
@@ -131,7 +136,7 @@ import { User
 
    const user = await User.create({
      fullname: Tempuser.fullname,
-     mobileNo:TempUser.mobileNo,
+     mobileNo:Tempuser.mobileNo,
      email: Tempuser.email,
      password: Tempuser.password,
    });

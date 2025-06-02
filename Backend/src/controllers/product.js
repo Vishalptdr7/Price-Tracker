@@ -1,20 +1,27 @@
 import Product from "../models/product.js";
-
+import {uploadfileOnCloudinary} from "../utils/cloudinary.js";
 // @desc    Add a new product to track
 // @route   POST /api/products
 export const addProduct = async (req, res) => {
   try {
-    const { url, title, image, currentPrice, desiredPrice, source } = req.body;
-
+    const { url, title, currentPrice, desiredPrice, source } = req.body;
     const existingProduct = await Product.findOne({ url });
     if (existingProduct) {
       return res.status(400).json({ message: "Product already exists" });
     }
-
+    const imageLocalPath=req.files?.image?.[0]?.path;
+    if (!imageLocalPath){
+      return res.status(400).json({ message: "Image is required" });
+    }
+    
+    const image= await uploadfileOnCloudinary(imageLocalPath);
+    if (!image?.url) {
+      return res.status(500).json({ message: "Failed to upload image" });
+    }
     const newProduct = await Product.create({
       url,
       title,
-      image,
+      image : image?.url || "",
       currentPrice,
       desiredPrice,
       source,
@@ -89,7 +96,7 @@ export const deleteProduct = async (req, res) => {
 export const updateProductByUrl = async (req, res) => {
   try {
     const { url, currentPrice } = req.body;
-
+    console.log("Updating product by URL:", url, currentPrice);
     const product = await Product.findOne({ url });
     if (!product) return res.status(404).json({ message: "Product not found" });
 
