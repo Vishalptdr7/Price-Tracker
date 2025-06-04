@@ -1,9 +1,10 @@
 import React from 'react';
+import ImageCarousel from '../components/ImageCrousal';
 const HomePage = () => {
   
   return (
    <div>
-    Jai Shree Ram
+    <ImageCarousel/>
    </div>
   );
 };

@@ -48,7 +48,8 @@ export const useAuthStore = create((set, get) => ({
     try {
       const res = await axiosInstance.post("/users/verifyOtp", data);
       if (res.data.success) {
-        set({ authUser: res.data.user }); // Store the returned user data
+        set({ authUser: res.data.user });
+         // Store the returned user data
       } else {
         toast.error(res.data.message || "OTP verification failed");
       }
@@ -60,11 +61,19 @@ export const useAuthStore = create((set, get) => ({
   login: async (data) => {
     set({ isLoggingIn: true });
     try {
+
       const res = await axiosInstance.post("/users/login", data);
       
       set({ authUser: res.data.data.message });
 
       toast.success("Logged in successfully");
+
+
+
+
+
+
+
     } catch (error) {
       toast.error(error.response.data.message);
     } finally {

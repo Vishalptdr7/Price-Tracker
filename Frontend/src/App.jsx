@@ -8,17 +8,25 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import VerifyOtpPage from "./pages/OtpPage";
 import ContactComponent from "./pages/ContactUs";
+import Navbar from "./components/Navbar";
 import AboutUs from "./pages/AboutUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
+import "flowbite";
 // import HomePage from "./pages/HomePage";
+
+
 
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
-
+  console.log("Auth User:", authUser);
   useEffect(() => {
     checkAuth();
   }, []);
 
+
+
+ 
+  
   if (isCheckingAuth && !authUser) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -29,6 +37,8 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <Navbar />
+      {/* Main content area */}
       <div className="flex-grow">
         <Routes>
           <Route

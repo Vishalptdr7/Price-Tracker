@@ -17,10 +17,11 @@ const VerifyOtpPage = () => {
     password: password,
   });
 
-  const { verifyOtp, authUser, login, resendOtp } = useAuthStore();
+  const { verifyOtp, authUser, login } = useAuthStore();
 
   const handleOtpChange = (e) => setOtp(e.target.value);
 
+  
   const handleVerifyOtp = async () => {
     if (!otp) {
       toast.error("Please enter the OTP");

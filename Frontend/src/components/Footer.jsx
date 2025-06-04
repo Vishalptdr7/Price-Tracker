@@ -10,7 +10,8 @@ const Footer = () => {
           <div>
             <h2 className="text-xl font-bold text-white">BarterSystem</h2>
             <p className="text-sm mt-2">
-              Empowering users to exchange skills and services seamlessly.
+              DealHunt helps you track product prices and get notified when
+              deals drop—shop smart, save more.
             </p>
           </div>
 
@@ -80,7 +81,7 @@ const Footer = () => {
 
         {/* Copyright Section */}
         <div className="border-t border-gray-700 mt-6 pt-4 text-center text-sm">
-          © {new Date().getFullYear()} BarterSystem. All rights reserved.
+          © {new Date().getFullYear()} DealHunt. All rights reserved.
         </div>
       </div>
     </footer>

@@ -12,7 +12,7 @@ const SignUpPage = () => {
   const { signup, isSigningUp } = useAuthStore();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

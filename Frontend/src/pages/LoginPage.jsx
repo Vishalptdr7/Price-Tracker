@@ -5,19 +5,22 @@ import { Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const { login, isLoggingIn } = useAuthStore();
+  const { login, isLoggingIn,authUser } = useAuthStore();
 
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-
-  const handleSubmit = (e) => {
+ 
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    login(formData);
-    navigate("/");
+    const success = await login(formData);
+    if (success) {
+      navigate("/");
+    }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-6">
@@ -72,18 +75,19 @@ const LoginPage = () => {
             </button>
           </div>
 
-          <button
-            type="submit"
-            disabled={isLoggingIn}
-            className="w-full flex justify-center items-center py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition duration-200 disabled:opacity-70"
-          >
-            {isLoggingIn ? (
-              <Loader2 className="h-5 w-5 animate-spin" />
-            ) : (
-              "Sign In"
-            )}
-          </button>
-
+          
+            {" "}
+            <button
+              type="submit"
+              disabled={isLoggingIn}
+              className="w-full flex justify-center items-center py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition duration-200 disabled:opacity-70"
+            >
+              {isLoggingIn ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                "Sign In"
+              )}
+            </button>
           
         </form>
 
