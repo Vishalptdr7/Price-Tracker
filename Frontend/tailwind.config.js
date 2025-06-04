@@ -11,10 +11,10 @@ export default {
     extend: {},
   },
   plugins: [
-    daisyui,
+    
     require("flowbite/plugin"), // ✅ Correct way to add Flowbite plugin
   ],
   daisyui: {
-    themes: ["light", "dark", "cupcake", "retro"], // ✅ Fix typo: "dart" ➝ "dark"
+    themes: ["light"], // ✅ Fix typo: "dart" ➝ "dark"
   },
 };

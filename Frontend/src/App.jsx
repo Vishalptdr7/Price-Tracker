@@ -13,7 +13,7 @@ import AboutUs from "./pages/AboutUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import "flowbite";
 // import HomePage from "./pages/HomePage";
-
+import Footer from "./components/Footer";
 
 
 function App() {
@@ -60,6 +60,7 @@ function App() {
           <Route path="/contact" element={<ContactComponent />} />
         </Routes>
       </div>
+      <Footer/>
       <Toaster />
     </div>
   );

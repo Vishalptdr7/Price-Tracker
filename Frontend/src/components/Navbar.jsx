@@ -1,83 +1,171 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore.js";
 
-const Navbar = () => {
-  const { logout, authUser } = useAuthStore();
+export default function Navbar() {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  const { authUser, checkAuth, isCheckingAuth, logout } = useAuthStore();
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="navbar bg-base-100 shadow-sm">
-      <div className="flex-1">
-        <Link to="/" className="btn btn-ghost text-xl">
-          DealHunt
+    <nav className="bg-white border-gray-200 dark:bg-gray-900">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <Link
+          to="/"
+          className="flex items-center space-x-3 rtl:space-x-reverse"
+        >
+          <img
+            src="https://flowbite.com/docs/images/logo.svg"
+            className="h-8"
+            alt="Flowbite Logo"
+          />
+          <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
+            DealHunt
+          </span>
         </Link>
 
-        {/* Home, About, Contact */}
-        <div className="ml-4 hidden md:flex gap-4">
-          <Link to="/" className="btn btn-ghost text-sm">
-            Home
-          </Link>
-          <Link to="/aboutus" className="btn btn-ghost text-sm">
-            About Us
-          </Link>
-          <Link to="/contact" className="btn btn-ghost text-sm">
-            Contact
-          </Link>
-        </div>
-      </div>
+        <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+          <button
+            type="button"
+            className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+            id="user-menu-button"
+            aria-expanded={dropdownOpen}
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+          >
+            <span className="sr-only">Open user menu</span>
+            <img
+              className="w-8 h-8 rounded-full"
+              src="/docs/images/people/profile-picture-3.jpg"
+              alt="user photo"
+            />
+          </button>
 
-      <div className="flex-none flex items-center gap-4">
-        {authUser ? (
-          <>
-            {/* Avatar with Initial */}
-            <div className="dropdown dropdown-end">
-              <div
-                tabIndex={0}
-                role="button"
-                className="btn btn-ghost btn-circle avatar"
-              >
-                <div className="w-10 rounded-full bg-primary text-white flex items-center justify-center font-bold">
-                  {authUser?.fullname?.charAt(0).toUpperCase() || "U"}
-                </div>
+          {dropdownOpen && (
+            <div
+              ref={dropdownRef}
+              className="z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600 absolute right-0"
+              id="user-dropdown"
+            >
+              <div className="px-4 py-3">
+                <span className="block text-sm text-gray-900 dark:text-white">
+                  {authUser ? authUser.fullname : "Guest User"}
+                  
+                </span>
+                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
+                  {authUser ? authUser.email : "Guest User"}
+                </span>
               </div>
-              <ul
-                tabIndex={0}
-                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
-              >
+              <ul className="py-2" aria-labelledby="user-menu-button">
                 <li>
-                  <Link to="/profile" className="justify-between">
-                    Profile
-                    <span className="badge">New</span>
+                  <Link
+                    to="/dashboard"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Dashboard
                   </Link>
                 </li>
                 <li>
-                  <Link to="/settings">Settings</Link>
+                  <Link
+                    to="/settings"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Settings
+                  </Link>
                 </li>
                 <li>
-                  <button onClick={logout}>Logout</button>
+                  <button
+                    onClick={logout}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                  >
+                    Sign out
+                  </button>
                 </li>
               </ul>
             </div>
-          </>
-        ) : (
-          <>
-            <Link
-              to="/login"
-              className="px-4 py-2 border border-indigo-600 text-indigo-600 rounded-md hover:bg-indigo-600 hover:text-white transition"
-            >
-              Login
-            </Link>
-            <Link
-              to="/register"
-              className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition"
-            >
-              Sign Up
-            </Link>
-          </>
-        )}
-      </div>
-    </div>
-  );
-};
+          )}
 
-export default Navbar;
+          <button
+            data-collapse-toggle="navbar-user"
+            type="button"
+            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            aria-controls="navbar-user"
+            aria-expanded={mobileMenuOpen}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            <span className="sr-only">Open main menu</span>
+            <svg
+              className="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 17 14"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M1 1h15M1 7h15M1 13h15"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <div
+          className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${
+            mobileMenuOpen ? "block" : "hidden"
+          }`}
+          id="navbar-user"
+        >
+          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+            <li>
+              <Link
+                to="/"
+                className="block py-2 px-3 text-white bg-blue-700 rounded-sm md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500"
+                aria-current="page"
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/aboutus"
+                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              >
+                About
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/services"
+                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              >
+                Services
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/contact"
+                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              >
+                Contact
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  );
+}
