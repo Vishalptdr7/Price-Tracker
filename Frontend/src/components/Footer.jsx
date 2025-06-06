@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
           {/* Brand Section */}
           <div>
-            <h2 className="text-xl font-bold text-white">BarterSystem</h2>
+            <h2 className="text-xl font-bold text-white">DealHunt</h2>
             <p className="text-sm mt-2">
               DealHunt helps you track product prices and get notified when
               deals drop—shop smart, save more.

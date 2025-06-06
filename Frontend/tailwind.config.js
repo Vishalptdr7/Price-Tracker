@@ -8,10 +8,16 @@ export default {
     "./node_modules/flowbite/**/*.js",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        pinky: "#fbe3e8",
+        bluegreeny: "#5cbdb9",
+        teenygreeny: "#ebf6f5",
+      },
+    },
   },
+
   plugins: [
-    
     require("flowbite/plugin"), // ✅ Correct way to add Flowbite plugin
   ],
   daisyui: {
