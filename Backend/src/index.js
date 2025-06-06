@@ -4,13 +4,6 @@ import DBconnection from "./db/db.js";
 import cors from 'cors';
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
-import multer from "multer";
-
-
-const upload = multer();
-
-
-
 
 dotenv.config({
     path: "./env",
@@ -41,8 +34,6 @@ app.listen(process.env.PORT ,()=>{
         console.error("Database Connection Failed: ", err);
     });
 });
-
-
 
 
 

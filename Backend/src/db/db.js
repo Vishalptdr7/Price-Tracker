@@ -3,7 +3,7 @@
 
 
 import mongoose from "mongoose";
-
+import { startCronJob } from "../cron/priceChecker.js";
 
 const DBconnection = async () => {
   try {
@@ -11,6 +11,7 @@ const DBconnection = async () => {
       `${process.env.MONGODB_URI}/${process.env.DB_NAME}`
     );
     console.log(`Database Connected: ${connectionData.connection.host}`);
+    startCronJob(); // Start the cron job after successful DB connection
   } catch (error) {
     console.error(error);
     throw error;

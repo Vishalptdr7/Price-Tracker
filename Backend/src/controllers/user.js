@@ -76,8 +76,8 @@ import { User
    let mailTransporter = nodemailer.createTransport({
      service: "gmail",
      auth: {
-       user: "patidarvishal233@gmail.com",
-       pass: "dhjplfofzgkmwfmj",
+       user: process.env.EMAIL_USER,
+       pass: process.env.EMAIL_PASS,
      },
    });
 
@@ -296,6 +296,7 @@ const currentUser = asyncHandler(async (req, res) => {
     if (!req.user){
         return res.status(400).json({ message: "User not authenticated" });
     }
+    
   return res
     .status(200)
     .json(new ApiResponse(200, req.user, "User Find Successfully"));
