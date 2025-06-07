@@ -40,6 +40,9 @@ const VideoCarousel = ({ videos }) => {
               muted
               loop
               className="w-full h-full object-cover"
+              playsInline
+              preload="metadata"
+              aria-label={`Video ${index + 1}`}
             />
           </div>
         ))}
@@ -55,6 +58,7 @@ const VideoCarousel = ({ videos }) => {
               index === currentIndex ? "bg-[#5cbdb9]" : "bg-gray-400"
             }`}
             aria-current={index === currentIndex}
+            aria-label={`Go to video ${index + 1}`}
             onClick={() => goToSlide(index)}
           />
         ))}

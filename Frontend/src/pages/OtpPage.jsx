@@ -6,13 +6,12 @@ import { toast } from "react-hot-toast";
 const VerifyOtpPage = () => {
   const [otp, setOtp] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
-  const [isResending, setIsResending] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const email = location.state?.email || "";
   const password = location.state?.password;
 
-  const [formData, setFormData] = useState({
+  const [formData] = useState({
     email: email,
     password: password,
   });
@@ -21,7 +20,6 @@ const VerifyOtpPage = () => {
 
   const handleOtpChange = (e) => setOtp(e.target.value);
 
-  
   const handleVerifyOtp = async () => {
     if (!otp) {
       toast.error("Please enter the OTP");
@@ -44,7 +42,6 @@ const VerifyOtpPage = () => {
       await verifyOtp({ email, otp });
       setTimeout(() => {
         if (authUser) {
-          console.log("User logged in successfully", authUser);
           login(formData);
           toast.success("Email verified successfully.");
           navigate("/");
@@ -60,18 +57,20 @@ const VerifyOtpPage = () => {
     }
   };
 
-  
-
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-6">
-      <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md w-full border border-gray-200">
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="bg-white shadow-xl rounded-2xl p-6 sm:p-8 max-w-sm sm:max-w-md w-full border border-gray-200">
+        {/* Header */}
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">OTP Verification</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+            OTP Verification
+          </h1>
           <p className="mt-2 text-sm text-gray-600">
             Enter the 6-digit OTP sent to your email
           </p>
         </div>
 
+        {/* Form */}
         <div className="space-y-4">
           <div>
             <label
@@ -98,8 +97,6 @@ const VerifyOtpPage = () => {
           >
             {isVerifying ? "Verifying..." : "Verify OTP"}
           </button>
-
-          
         </div>
       </div>
     </div>

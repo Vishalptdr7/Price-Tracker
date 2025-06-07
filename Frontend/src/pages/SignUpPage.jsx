@@ -12,7 +12,7 @@ const SignUpPage = () => {
   const { signup, isSigningUp } = useAuthStore();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -24,9 +24,9 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-white shadow-2xl rounded-2xl p-8 space-y-6">
-        <h1 className="text-4xl font-bold text-center text-teal-600">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4 sm:px-6 py-8">
+      <div className="w-full max-w-md bg-white shadow-2xl rounded-2xl p-6 sm:p-8 space-y-6">
+        <h1 className="text-3xl sm:text-4xl font-bold text-center text-teal-600">
           Create Account
         </h1>
 
@@ -46,7 +46,7 @@ const SignUpPage = () => {
               value={fullname}
               onChange={(e) => setName(e.target.value)}
               required
-              className="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm sm:text-base"
             />
           </div>
 
@@ -65,7 +65,7 @@ const SignUpPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm sm:text-base"
             />
           </div>
 
@@ -84,7 +84,7 @@ const SignUpPage = () => {
               value={mobileNo}
               onChange={(e) => setMobileNo(e.target.value)}
               required
-              className="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="mt-1 w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm sm:text-base"
             />
           </div>
 
@@ -104,7 +104,7 @@ const SignUpPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="mt-1 w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                className="mt-1 w-full px-4 py-3 pr-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm sm:text-base"
               />
               <button
                 type="button"
@@ -124,7 +124,7 @@ const SignUpPage = () => {
           <button
             type="submit"
             disabled={isSigningUp}
-            className="w-full bg-teal-600 hover:bg-teal-700 disabled:bg-teal-400 text-white py-3 rounded-lg text-lg font-semibold transition duration-300"
+            className="w-full bg-teal-600 hover:bg-teal-700 disabled:bg-teal-400 text-white py-3 rounded-lg text-base font-semibold transition duration-300"
           >
             {isSigningUp ? "Signing up..." : "Sign Up"}
           </button>

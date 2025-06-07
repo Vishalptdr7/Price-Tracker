@@ -135,6 +135,7 @@ export const trackProduct = async (req, res) => {
     });
 
     res.status(200).json({ message: "Product tracked", product });
+    console.log("Product tracked:", product);
   } catch (err) {
     res
       .status(500)
@@ -150,7 +151,7 @@ export const getProductById = async (req, res) => {
     const product = await Product.findById(id).populate("user", "email");
 
     if (!product) return res.status(404).json({ message: "Product not found" });
-
+    
     res.status(200).json({ message: "Product fetched", product });
   } catch (err) {
     res
@@ -171,5 +172,23 @@ export const getPriceHistory = async (req, res) => {
     res.status(200).json({ history: product.priceHistory });
   } catch (err) {
     res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
+
+
+
+// GET ALL PRODUCTS FOR LOGGED-IN USER
+export const getAllProducts = async (req, res) => {
+  try {
+    
+    const products = await Product.find({ user: req.user._id })
+
+      .populate("user", "email")
+      .sort({ lastChecked: -1 });
+
+    res.status(200).json({ message: "Products fetched", products });
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching products", error: err.message });
   }
 };

@@ -12,25 +12,29 @@ import Navbar from "./components/Navbar";
 import AboutUs from "./pages/AboutUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import "flowbite";
-// import HomePage from "./pages/HomePage";
+import ProductTrackPage from "./pages/ProductTrackPage";
 import Footer from "./components/Footer";
+import AllTrackedProducts from "./pages/AllTrackedProducts";
+import PriceHistoryPage from "./pages/PriceHistoryPage";
+import SignUpPageShimmer from "./Shimmer/SignUpPageShimmer";
 
+const ProtectedRoute = ({ children }) => {
+  const { authUser } = useAuthStore();
+  if (!authUser) return <Navigate to="/login" />;
+  return children;
+};
 
 function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore();
-  console.log("Auth User:", authUser);
+  
   useEffect(() => {
     checkAuth();
-  }, []);
+  }, [checkAuth]);
 
-
-
- 
-  
   if (isCheckingAuth && !authUser) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <Loader className="size-10 animate-spin" />
+        <Loader className="w-10 h-10 animate-spin" />
       </div>
     );
   }
@@ -38,7 +42,6 @@ function App() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      {/* Main content area */}
       <div className="flex-grow">
         <Routes>
           <Route
@@ -48,19 +51,54 @@ function App() {
 
           <Route
             path="/register"
-            element={!authUser ? <SignUpPage /> : <Navigate to="/" />}
+            element={
+              authUser ? (
+                <Navigate to="/" />
+              ) : isCheckingAuth ? (
+                <SignUpPageShimmer />
+              ) : (
+                <SignUpPage />
+              )
+            }
           />
+
           <Route
             path="/login"
             element={!authUser ? <LoginPage /> : <Navigate to="/" />}
           />
+
           <Route path="/verifyOtp" element={<VerifyOtpPage />} />
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/contact" element={<ContactComponent />} />
+
+          <Route
+            path="/product-track"
+            element={
+              <ProtectedRoute>
+                <ProductTrackPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/get-all-products"
+            element={
+              <ProtectedRoute>
+                <AllTrackedProducts />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/priceHistory"
+            element={
+              <ProtectedRoute>
+                <PriceHistoryPage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
-      <Footer/>
+      <Footer />
       <Toaster />
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore.js";
-
+import { UserInitialsBadge } from "./UserInitialsBadge.jsx";
 export default function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -26,11 +26,6 @@ export default function Navbar() {
           to="/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            className="h-8"
-            alt="Flowbite Logo"
-          />
           <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
             DealHunt
           </span>
@@ -45,11 +40,16 @@ export default function Navbar() {
             onClick={() => setDropdownOpen(!dropdownOpen)}
           >
             <span className="sr-only">Open user menu</span>
-            <img
-              className="w-8 h-8 rounded-full"
-              src="/docs/images/people/profile-picture-3.jpg"
-              alt="user photo"
-            />
+            <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold text-sm shadow-sm select-none">
+              {authUser
+                ? authUser.fullname
+                    .split(" ")
+                    .filter(Boolean)
+                    .map((n) => n[0].toUpperCase())
+                    .slice(0, 2)
+                    .join("")
+                : "GU"}
+            </div>
           </button>
 
           {dropdownOpen && (
@@ -58,15 +58,30 @@ export default function Navbar() {
               className="z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm dark:bg-gray-700 dark:divide-gray-600 absolute right-0"
               id="user-dropdown"
             >
-              <div className="px-4 py-3">
-                <span className="block text-sm text-gray-900 dark:text-white">
-                  {authUser ? authUser.fullname : "Guest User"}
-                  
-                </span>
-                <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
-                  {authUser ? authUser.email : "Guest User"}
-                </span>
+              <div className="px-4 py-3 flex items-center space-x-3">
+                {/* Initials circle */}
+                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold text-lg shadow-md select-none">
+                  {authUser
+                    ? authUser.fullname
+                        .split(" ")
+                        .filter(Boolean)
+                        .map((n) => n[0].toUpperCase())
+                        .slice(0, 2)
+                        .join("")
+                    : "GU"}
+                </div>
+
+                {/* User info */}
+                <div>
+                  <span className="block text-sm text-gray-900 dark:text-white">
+                    {authUser ? authUser.fullname : "Guest User"}
+                  </span>
+                  <span className="block text-sm text-gray-500 truncate dark:text-gray-400">
+                    {authUser ? authUser.email : "Guest User"}
+                  </span>
+                </div>
               </div>
+
               <ul className="py-2" aria-labelledby="user-menu-button">
                 <li>
                   <Link
@@ -147,20 +162,21 @@ export default function Navbar() {
                 About
               </Link>
             </li>
-            <li>
-              <Link
-                to="/services"
-                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-              >
-                Services
-              </Link>
-            </li>
+
             <li>
               <Link
                 to="/contact"
                 className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
                 Contact
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/product-track"
+                className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              >
+                Track Product
               </Link>
             </li>
           </ul>

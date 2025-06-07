@@ -10,7 +10,7 @@ const VideoCarouselWithDetails = () => {
   const videos = [video1, video2, video3];
 
   return (
-    <div className="p-6 mx-auto mt-6 max-w-7xl bg-white rounded-xl shadow-lg">
+    <div className="p-4 sm:p-6 mx-auto mt-6 max-w-7xl bg-white rounded-xl shadow-lg">
       <div className="flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="w-full md:w-1/2">
           <VideoCarousel videos={videos} />

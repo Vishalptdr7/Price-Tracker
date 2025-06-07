@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 const ImageCarousel = () => {
   const images = [
@@ -10,13 +11,16 @@ const ImageCarousel = () => {
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const carouselRef = useRef(null);
 
   useEffect(() => {
+    if (paused) return; // skip auto advance when paused
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
     }, 3000);
     return () => clearInterval(interval);
-  }, [images.length]);
+  }, [images.length, paused]);
 
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
@@ -30,13 +34,33 @@ const ImageCarousel = () => {
     setCurrentIndex(index);
   };
 
+  // Keyboard nav
+  const handleKeyDown = (e) => {
+    if (e.key === "ArrowLeft") {
+      prevSlide();
+    } else if (e.key === "ArrowRight") {
+      nextSlide();
+    }
+  };
+
   return (
-    <div className="p-6 mx-auto mt-6 max-w-7xl bg-white rounded-xl shadow-lg">
+    <div
+      className="p-6 mx-auto mt-6 max-w-7xl bg-white rounded-xl shadow-lg"
+      tabIndex={0} // to make div focusable
+      onKeyDown={handleKeyDown}
+      ref={carouselRef}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+      aria-roledescription="carousel"
+      aria-label="DealHunt image carousel"
+    >
       <div className="flex flex-col md:flex-row items-center justify-between gap-6">
         {/* Left Side Content */}
         <div className="w-full md:w-1/2 space-y-4">
           {/* Title */}
-          <h2 className="text-4xl font-bold text-gray-800">DealHunt </h2>
+          <h2 className="text-4xl font-bold text-gray-800">DealHunt</h2>
 
           {/* Description paragraph */}
           <p className="text-gray-600 text-lg">
@@ -52,9 +76,11 @@ const ImageCarousel = () => {
           </ul>
 
           {/* Call to action button */}
-          <button className="mt-4 px-6 py-3 bg-[#5cbdb9] text-white font-semibold rounded-lg hover:bg-[#49a9a4] transition duration-300">
-            Get Started Now
-          </button>
+          <Link to="/product-track">
+            <button className="mt-4 px-6 py-3 bg-[#5cbdb9] text-white font-semibold rounded-lg hover:bg-[#49a9a4] transition duration-300">
+              Get Started Now
+            </button>
+          </Link>
         </div>
 
         {/* Right Side Carousel */}
@@ -67,10 +93,11 @@ const ImageCarousel = () => {
                   index === currentIndex ? "block" : "hidden"
                 } duration-700 ease-in-out`}
                 data-carousel-item
+                aria-hidden={index !== currentIndex}
               >
                 <img
                   src={image}
-                  className="absolute block w-full h-full object-cover top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                  className="absolute inset-0 w-full h-full object-cover"
                   alt={`Slide ${index + 1}`}
                 />
               </div>
@@ -87,6 +114,7 @@ const ImageCarousel = () => {
                   index === currentIndex ? "bg-white" : "bg-gray-400"
                 }`}
                 aria-current={index === currentIndex}
+                aria-label={`Go to slide ${index + 1}`}
                 onClick={() => goToSlide(index)}
               />
             ))}
@@ -96,6 +124,7 @@ const ImageCarousel = () => {
           <button
             onClick={prevSlide}
             className="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-3"
+            aria-label="Previous slide"
           >
             <span className="w-10 h-10 rounded-full bg-white/30 hover:bg-white/50 flex items-center justify-center">
               <svg
@@ -118,6 +147,7 @@ const ImageCarousel = () => {
           <button
             onClick={nextSlide}
             className="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-3"
+            aria-label="Next slide"
           >
             <span className="w-10 h-10 rounded-full bg-white/30 hover:bg-white/50 flex items-center justify-center">
               <svg
