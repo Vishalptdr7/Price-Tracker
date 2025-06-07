@@ -44,13 +44,5 @@ app.use("/api/users", userRouter);
 import productRouter from "./routes/product.js";
 app.use("/api/products", productRouter);
 
-import userProductTrackRouter from "./routes/userProductTrack.js";
-app.use("/api/tracks", userProductTrackRouter);
-
-import priceHistoryRouter from "./routes/priceHistory.js";
-app.use("/api/price-history", priceHistoryRouter);
-
-import notificationRouter from "./routes/notification.js";
-app.use("/api/notifications", notificationRouter);
 
 export default app;
