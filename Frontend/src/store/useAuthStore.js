@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { axiosInstance } from "../lib/axios.js";
 import toast from "react-hot-toast";
+
+
 const BASE_URL =
   import.meta.env.MODE === "development" ? "http://localhost:8080" : "/";
 
@@ -16,16 +18,16 @@ export const useAuthStore = create((set, get) => ({
   checkAuth: async () => {
     try {
       const res = await axiosInstance.get("/users/currentUser");
+
       if (res.data.statusCode === 200) {
         set({
           authUser: res.data.message,
-          userId: res.data.message.user_id,
         });
       } else {
-        set({ authUser: null, userId: null });
+        set({ authUser: null });
       }
     } catch (error) {
-      set({ authUser: null, userId: null });
+      set({ authUser: null });
     } finally {
       set({ isCheckingAuth: false });
     }
@@ -48,34 +50,38 @@ export const useAuthStore = create((set, get) => ({
     try {
       const res = await axiosInstance.post("/users/verifyOtp", data);
       if (res.data.success) {
-        set({ authUser: res.data.user });
-         // Store the returned user data
+        set({ authUser: res.data.data }); // set user
+        return res.data.data; // ✅ return the user
       } else {
         toast.error(res.data.message || "OTP verification failed");
+        return null;
       }
     } catch (error) {
       console.error("Error during OTP verification:", error);
       toast.error("OTP verification failed");
+      return null;
     }
   },
-  login: async (data) => {
+
+  login: async (formData) => {
     set({ isLoggingIn: true });
     try {
+      const res = await axiosInstance.post("/users/login", formData);
 
-      const res = await axiosInstance.post("/users/login", data);
-      
-      set({ authUser: res.data.data.message });
+      const user = res.data?.data?.user;
+      if (!user) {
+        throw new Error("No user data returned");
+      }
 
+      set({ authUser: user });
       toast.success("Logged in successfully");
-
-
-
-
-
-
-
+      return true;
     } catch (error) {
-      toast.error(error.response.data.message);
+      console.error("Login error:", error);
+      toast.error(
+        error?.response?.data?.message || error.message || "Login failed"
+      );
+      return false;
     } finally {
       set({ isLoggingIn: false });
     }

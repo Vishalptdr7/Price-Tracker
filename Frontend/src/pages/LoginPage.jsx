@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import { useAuthStore } from "../store/useAuthStore.js";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
@@ -6,19 +6,24 @@ import { Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 const LoginPage = () => {
   const navigate = useNavigate();
   const { login, isLoggingIn, authUser } = useAuthStore();
-
+  useEffect(() => {
+    if (authUser) {
+      navigate("/");
+    }
+  }, [authUser, navigate]);
+  
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const success = await login(formData);
-    if (success) {
-      navigate("/");
-    }
+    await login(formData);
+    
+    
   };
 
   const Shimmer = () => (

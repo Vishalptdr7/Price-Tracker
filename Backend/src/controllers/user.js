@@ -36,7 +36,6 @@ import { User
    //   //check for image,check for avatar
    //   //upload image
    const { email, mobileNo, password, fullname } = req.body;
-   console.log(email, mobileNo, password, fullname);
    if (fullname === "") {
      throw new ApiError(400, "Full Name is required");
    }
@@ -110,13 +109,15 @@ import { User
 
    return res
      .status(200)
-     .json(
-       new ApiResponse(
-         200,
-         { email: tempUser.email, otp },
-         "OTP sent successfully. Please verify to complete registration"
-       )
-     );
+     .json({
+       statusCode: 200,
+       success: true,
+       data: {
+         user: tempUser,
+         message: "Logged in successfully",
+       },
+       errors: [],
+     });
  });
 
 
@@ -144,16 +145,22 @@ import { User
    await TempUser.deleteOne({ email });
 
    const createdUser = await User.findById(user._id).select(
-     "-password -refreshToken"
+     "-password "
    );
 
    if (!createdUser) {
      throw new ApiError(500, "Something went wrong during registration");
    }
 
-   return res
-     .status(201)
-     .json(new ApiResponse(201, createdUser, "User created successfully"));
+   return res.status(200).json({
+     statusCode: 200,
+     success: true,
+     data: {
+       user: createdUser,
+       message: "Logged in successfully",
+     },
+     errors: [],
+   });
  });
   
 
@@ -172,7 +179,7 @@ const loginUser = asyncHandler(async (req, res) => {
   //send token
 
   const {  email, password } = req.body;
-  console.log( email, password);
+  
   if ( !email) {
     throw new ApiError(400, "Email is required");
   }
@@ -196,19 +203,22 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
   };
-  console.log(accessToken, refreshToken);
+  
   return res
     .status(200)
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
-    .json(
-      new ApiResponse(200, {
+    .json({
+      statusCode: 200,
+      success: true,
+      data: {
         user: loggedUser,
         refreshToken,
         accessToken,
         message: "Logged in successfully",
-      })
-    );
+      },
+      errors: [],
+    });
 });
 
 
@@ -264,7 +274,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
     }
     const { accessToken, newrefreshToken } =
       await generateAccessTokenAndRefreshToken(user._id);
-    console.log(newrefreshToken);
+    
     const loggedUser = await User.findById(user._id).select(
       "-password -refreshToken"
     );

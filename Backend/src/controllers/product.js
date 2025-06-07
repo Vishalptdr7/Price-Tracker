@@ -24,7 +24,6 @@ export const trackProduct = async (req, res) => {
     });
 
     res.status(200).json({ message: "Product tracked", product });
-    console.log("Product tracked:", product);
   } catch (err) {
     res
       .status(500)

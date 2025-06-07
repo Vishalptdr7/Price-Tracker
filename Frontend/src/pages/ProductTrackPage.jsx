@@ -20,7 +20,7 @@ const ProductTrackPage = () => {
         targetPrice,
       });
       toast.success("Product tracked successfully");
-      console.log(data);
+      
       setUrl("");
       setProductName("");
       setTargetPrice("");

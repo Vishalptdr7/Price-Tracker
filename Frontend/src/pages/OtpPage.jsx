@@ -21,34 +21,22 @@ const VerifyOtpPage = () => {
   const handleOtpChange = (e) => setOtp(e.target.value);
 
   const handleVerifyOtp = async () => {
-    if (!otp) {
-      toast.error("Please enter the OTP");
-      return;
-    }
-
-    if (!email) {
-      toast.error("User email is missing");
-      return;
-    }
-
-    if (!/^\d{6}$/.test(otp)) {
-      toast.error("OTP should be a 6-digit number");
-      return;
-    }
+    if (!otp) return toast.error("Please enter the OTP");
+    if (!email) return toast.error("User email is missing");
+    if (!/^\d{6}$/.test(otp))
+      return toast.error("OTP should be a 6-digit number");
 
     setIsVerifying(true);
 
     try {
-      await verifyOtp({ email, otp });
-      setTimeout(() => {
-        if (authUser) {
-          login(formData);
-          toast.success("Email verified successfully.");
-          navigate("/");
-        } else {
-          toast.error("User data not found after OTP verification");
-        }
-      }, 500);
+      const user = await verifyOtp({ email, otp });
+      if (user) {
+        await login(formData); // call login after setting user
+        toast.success("Email verified successfully.");
+        navigate("/");
+      } else {
+        toast.error("User data not found after OTP verification");
+      }
     } catch (error) {
       console.error("Error in OTP verification:", error);
       toast.error("OTP verification failed");
@@ -56,6 +44,7 @@ const VerifyOtpPage = () => {
       setIsVerifying(false);
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 sm:px-6 lg:px-8">

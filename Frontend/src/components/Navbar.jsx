@@ -41,7 +41,7 @@ export default function Navbar() {
           >
             <span className="sr-only">Open user menu</span>
             <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold text-sm shadow-sm select-none">
-              {authUser
+              {authUser?.fullname
                 ? authUser.fullname
                     .split(" ")
                     .filter(Boolean)
@@ -60,16 +60,7 @@ export default function Navbar() {
             >
               <div className="px-4 py-3 flex items-center space-x-3">
                 {/* Initials circle */}
-                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold text-lg shadow-md select-none">
-                  {authUser
-                    ? authUser.fullname
-                        .split(" ")
-                        .filter(Boolean)
-                        .map((n) => n[0].toUpperCase())
-                        .slice(0, 2)
-                        .join("")
-                    : "GU"}
-                </div>
+                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold text-lg shadow-md select-none"></div>
 
                 {/* User info */}
                 <div>
@@ -85,18 +76,18 @@ export default function Navbar() {
               <ul className="py-2" aria-labelledby="user-menu-button">
                 <li>
                   <Link
-                    to="/dashboard"
+                    to="/"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                   >
-                    Dashboard
+                    Home
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to="/settings"
+                    to="/privacy-policy"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                   >
-                    Settings
+                    Privacy Policy
                   </Link>
                 </li>
                 <li>
