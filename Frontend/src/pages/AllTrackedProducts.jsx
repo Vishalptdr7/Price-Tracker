@@ -21,6 +21,17 @@ const AllTrackedProducts = () => {
     }
   };
 
+  const deleteProduct = async (id) => {
+    try {
+      await axiosInstance.delete(`/products/${id}`);
+      toast.success("Product deleted");
+      setProducts((prev) => prev.filter((p) => p._id !== id));
+    } catch (error) {
+      toast.error("Failed to delete product");
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -83,6 +94,13 @@ const AllTrackedProducts = () => {
                   aria-label={`View price graph for ${product.productName}`}
                 >
                   📈 View Price Graph
+                </button>
+                <button
+                  onClick={() => deleteProduct(product._id)}
+                  className="w-full mt-2 bg-red-500 hover:bg-red-600 text-white font-medium py-2 rounded-lg transition duration-300"
+                  aria-label={`Delete ${product.productName}`}
+                >
+                  🗑️ Delete
                 </button>
               </div>
             ))}
