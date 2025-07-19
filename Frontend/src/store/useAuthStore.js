@@ -15,7 +15,7 @@ export const useAuthStore = create((set, get) => ({
   setAuthUser: (userData) => set({ authUser: userData }),
   checkAuth: async () => {
     try {
-      const res = await axiosInstance.get("/users/currentUser");
+      const res = await axiosInstance.get("/api/users/currentUser");
 
       if (res.data.statusCode === 200) {
         set({
@@ -34,7 +34,7 @@ export const useAuthStore = create((set, get) => ({
   signup: async (data) => {
     set({ isSigningUp: true });
     try {
-      const res = await axiosInstance.post("/users/registerUser", data);
+      const res = await axiosInstance.post("/api/users/registerUser", data);
       set({ authUser: res.data.message }); // Reset authUser until OTP is verified
       toast.success("Account created successfully. OTP sent to your email.");
     } catch (error) {
@@ -46,7 +46,7 @@ export const useAuthStore = create((set, get) => ({
 
   verifyOtp: async (data) => {
     try {
-      const res = await axiosInstance.post("/users/verifyOtp", data);
+      const res = await axiosInstance.post("/api/users/verifyOtp", data);
       if (res.data.success) {
         set({ authUser: res.data.data }); // set user
         return res.data.data; // ✅ return the user
@@ -64,7 +64,7 @@ export const useAuthStore = create((set, get) => ({
   login: async (formData) => {
     set({ isLoggingIn: true });
     try {
-      const res = await axiosInstance.post("/users/login", formData);
+      const res = await axiosInstance.post("/api/users/login", formData);
 
       const user = res.data?.data?.user;
       if (!user) {
@@ -87,7 +87,7 @@ export const useAuthStore = create((set, get) => ({
 
   logout: async () => {
     try {
-      await axiosInstance.post("/users/logout");
+      await axiosInstance.post("/api/users/logout");
       set({ authUser: null });
       toast.success("Logged out successfully");
     } catch (error) {

@@ -14,7 +14,7 @@ const ProductTrackPage = () => {
     e.preventDefault();
     setLoading(true); // ✅ Show shimmer when loading starts
     try {
-      const { data } = await axiosInstance.post("/products/track", {
+      const { data } = await axiosInstance.post("/api/products/track", {
         url,
         productName,
         targetPrice,

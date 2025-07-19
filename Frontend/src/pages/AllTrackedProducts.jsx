@@ -10,7 +10,7 @@ const AllTrackedProducts = () => {
 
   const fetchProducts = async () => {
     try {
-      const { data } = await axiosInstance.get("/products/all/gets");
+      const { data } = await axiosInstance.get("/api/products/all/gets");
       if (data?.products) setProducts(data.products);
       else setProducts([]);
     } catch (error) {
@@ -23,7 +23,7 @@ const AllTrackedProducts = () => {
 
   const deleteProduct = async (id) => {
     try {
-      await axiosInstance.delete(`/products/${id}`);
+      await axiosInstance.delete(`/api/products/${id}`);
       toast.success("Product deleted");
       setProducts((prev) => prev.filter((p) => p._id !== id));
     } catch (error) {
