@@ -49,6 +49,4 @@ app.use("/api/users", userRouter);
 
 import productRouter from "./routes/product.js";
 app.use("/api/products", productRouter);
-
-
 export default app;
