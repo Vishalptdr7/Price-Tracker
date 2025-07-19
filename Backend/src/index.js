@@ -37,7 +37,7 @@ app.listen(process.env.PORT ,()=>{
 
 
 
-app.get("/api/users", (req, res) => {
+app.get("/", (req, res) => {
 
     res.send("Welcome to Price Tracker API", {
         status: "success",
