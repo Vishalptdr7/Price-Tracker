@@ -11,11 +11,17 @@ export const sendEmail = async (to, productName, price, url) => {
   });
 
   const mailOptions = {
-    from: process.env.SMTP_EMAIL,
+    from: process.env.EMAIL_USER,
     to ,
     subject: `${productName} Price Dropped!`,
     html: `<p>The price is now ₹${price} for <b>${productName}</b>.</p><a href="${url}">Buy Now</a>`,
   };
 
-  await transporter.sendMail(mailOptions);
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log(`Email sent to ${to} for ${productName}`);
+  } catch (err) {
+    console.error("Email send error:", err);
+    throw new ApiError(500, "Failed to send email");
+  }
 };

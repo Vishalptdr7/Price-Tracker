@@ -15,7 +15,7 @@ export const startCronJob = () => {
         const latestPrice = await getPriceFromURL(p.url);
 
         if (latestPrice <= p.targetPrice) {
-          await sendEmail(user.email, p.productName, latestPrice, p.url);
+          await sendEmail(p.user.email, p.productName, latestPrice, p.url);
         }
 
         p.currentPrice = latestPrice;
