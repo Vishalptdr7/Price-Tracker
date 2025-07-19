@@ -28,17 +28,15 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(async (req, res, next) => {
-  if (!dbConnected) {
-    try {
-      await DBconnection();
-      dbConnected = true;
-      console.log("✅ Database connected");
-    } catch (err) {
-      console.error("❌ DB connection failed:", err.message);
-    }
-  }
-  next();
+app.listen(process.env.PORT, () => {
+  console.log("Server Started on Port " + process.env.PORT);
+  DBconnection()
+    .then(() => {
+      console.log("Database Connected");
+    })
+    .catch((err) => {
+      console.error("Database Connection Failed: ", err);
+    });
 });
 
 app.get("/", (req, res) => {
