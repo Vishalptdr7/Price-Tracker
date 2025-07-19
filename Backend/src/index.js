@@ -13,7 +13,7 @@ dotenv.config({
 
   app.use(
     cors({
-      origin: "http://localhost:5173",
+      origin: "https://price-tracker-xval.vercel.app",
       methods: ["GET", "POST", "DELETE", "PUT", "POST"],
       credentials: true,
     })
