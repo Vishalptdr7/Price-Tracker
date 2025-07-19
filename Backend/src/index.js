@@ -37,7 +37,13 @@ app.listen(process.env.PORT ,()=>{
 
 
 
+app.get("/",(req,res)=>{
 
+    res.send("Welcome to Price Tracker API",{
+        status: "success",
+        message: "Welcome to Price Tracker API"
+    });
+})
 import userRouter from "./routes/user.js";
 app.use("/api/users", userRouter);
 
