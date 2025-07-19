@@ -33,6 +33,7 @@
     "prettier": "^3.6.2",
     "puppeteer": "^24.14.0",
     "puppeteer-extra": "^3.3.6",
-    "puppeteer-extra-plugin-stealth": "^2.11.2"
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "serverless-http": "^3.2.0"
   }
 }
