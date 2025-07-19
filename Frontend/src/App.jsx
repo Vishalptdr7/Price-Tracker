@@ -17,7 +17,7 @@ import Footer from "./components/Footer";
 import AllTrackedProducts from "./pages/AllTrackedProducts";
 import PriceHistoryPage from "./pages/PriceHistoryPage";
 import SignUpPageShimmer from "./Shimmer/SignUpPageShimmer";
-
+console.log(import.meta.env.VITE_API_URL);
 const ProtectedRoute = ({ children }) => {
   const { authUser } = useAuthStore();
   if (!authUser) return <Navigate to="/login" />;
