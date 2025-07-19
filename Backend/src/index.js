@@ -37,9 +37,9 @@ app.listen(process.env.PORT ,()=>{
 
 
 
-app.get("/",(req,res)=>{
+app.get("/api/users", (req, res) => {
 
-    res.send("Welcome to Price Tracker API",{
+    res.send("Welcome to Price Tracker API", {
         status: "success",
         message: "Welcome to Price Tracker API"
     });
