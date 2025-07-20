@@ -1,8 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiErrors.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { User
- } from "../models/User.js";
+import User from "../models/User.js";
  import verifyJWT from "../middlewares/auth.js";
  import jwt from "jsonwebtoken";
  import mongoose from "mongoose";

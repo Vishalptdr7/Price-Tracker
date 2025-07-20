@@ -66,6 +66,6 @@ userSchema.methods.generateAccessToken = function () {
   );
 };
 
-const User = mongoose.model("user", userSchema);
+const User = mongoose.model("User", userSchema);
 
-export { User };
+export default User;
