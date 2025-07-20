@@ -26,89 +26,70 @@ import User from "../models/User.js";
 
 
  const registerUser = asyncHandler(async (req, res) => {
-   //   // res.status(200).json({
-   //   //     message:"User registered successfully"
-   //   // })
-   //   ///get user details from frontend
-   //   // validations if not empty
-   //   //check if user is already registered ,using email,username
-   //   //check for image,check for avatar
-   //   //upload image
-   const { email, mobileNo, password, fullname } = req.body;
-   if (fullname === "") {
-     throw new ApiError(400, "Full Name is required");
-   }
-
-   if (!email?.trim()) {
-     throw new ApiError(400, "Email is required");
-   }
-  
-   
-   
-  if (mobileNo === "") {
-     throw new ApiError(400, "Mobile Number is required");
-   }
-   
-   if (password === "") {
-     throw new ApiError(400, "Password is required");
-   }
-
-   const exist = await User.findOne({
-    email:email
-   });
-   if (exist) {
-     throw new ApiError(400, "User already exists");
-   }
-
-   
-   
-   
-
-   // Generate OTP
-   const otpGenerator = () => {
-     return Math.floor(100000 + Math.random() * 900000).toString();
-   };
-
-   const otp = otpGenerator();
-
-   let mailTransporter = nodemailer.createTransport({
-     service: "gmail",
-     auth: {
-       user: process.env.EMAIL_USER,
-       pass: process.env.EMAIL_PASS,
-     },
-   });
-
-   let mailDetails = {
-     from: "patidarvishal233@gmail.com",
-     to: `${email}`,
-     subject: "Test mail",
-     text: `Your OTP for verification is ${otp}.`,
-     html: `<h1>Your OTP</h1><p>Your OTP for verification is <strong>${otp}</strong>.</p>`,
-   };
-
    try {
-     await mailTransporter.sendMail(mailDetails);
-   } catch (err) {
-     console.error("Email send error:", err); // Add this
-     throw new ApiError(500, "Failed to send OTP email");
-   }
-  
+     const { email, mobileNo, password, fullname } = req.body;
 
-   const tempUser = await TempUser.create({
-     fullname,
-     mobileNo,
+     if (fullname === "") {
+       throw new ApiError(400, "Full Name is required");
+     }
 
+     if (!email?.trim()) {
+       throw new ApiError(400, "Email is required");
+     }
 
-     email,
-     password,
-     otp,
-     otpExpiry: Date.now() + 10 * 60 * 1000,
-   });
+     if (mobileNo === "") {
+       throw new ApiError(400, "Mobile Number is required");
+     }
 
-   return res
-     .status(200)
-     .json({
+     if (password === "") {
+       throw new ApiError(400, "Password is required");
+     }
+
+     const exist = await User.findOne({ email: email });
+     if (exist) {
+       throw new ApiError(400, "User already exists");
+     }
+
+     // Generate OTP
+     const otpGenerator = () => {
+       return Math.floor(100000 + Math.random() * 900000).toString();
+     };
+
+     const otp = otpGenerator();
+
+     let mailTransporter = nodemailer.createTransport({
+       service: "gmail",
+       auth: {
+         user: process.env.EMAIL_USER,
+         pass: process.env.EMAIL_PASS,
+       },
+     });
+
+     let mailDetails = {
+       from: "patidarvishal233@gmail.com",
+       to: `${email}`,
+       subject: "Test mail",
+       text: `Your OTP for verification is ${otp}.`,
+       html: `<h1>Your OTP</h1><p>Your OTP for verification is <strong>${otp}</strong>.</p>`,
+     };
+
+     try {
+       await mailTransporter.sendMail(mailDetails);
+     } catch (err) {
+       console.error("Email send error:", err);
+       throw new ApiError(500, "Failed to send OTP email");
+     }
+
+     const tempUser = await TempUser.create({
+       fullname,
+       mobileNo,
+       email,
+       password,
+       otp,
+       otpExpiry: Date.now() + 10 * 60 * 1000,
+     });
+
+     return res.status(200).json({
        statusCode: 200,
        success: true,
        data: {
@@ -117,7 +98,15 @@ import User from "../models/User.js";
        },
        errors: [],
      });
+   } catch (error) {
+     console.error("Register User Error:", error);
+     return res.status(error.statusCode || 500).json({
+       message: error.message || "Server Error",
+       stack: process.env.NODE_ENV === "development" ? error.stack : undefined,
+     });
+   }
  });
+
 
 
 
