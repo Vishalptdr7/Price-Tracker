@@ -33,7 +33,7 @@ app.listen(process.env.PORT || 8080, () => {
     .then(() => console.log("✅ Database Connected"))
     .catch((err) => console.error("❌ DB Connection Failed:", err));
 });
-console.log(process.env.MONGODB_URI);
+console.log("mongodbURI is from database or env file", process.env.MONGODB_URI);
 
 
 app.get("/", (req, res) => {
