@@ -14,7 +14,6 @@ app.use(
   cors({
     origin: [
       "https://price-tracker-frontend-kappa.vercel.app",
-      "http://localhost:5173",
     ],
     methods: ["GET", "POST", "DELETE", "PUT", "POST"],
     credentials: true,
