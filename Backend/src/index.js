@@ -12,9 +12,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: [
-      "https://price-tracker-frontend-kappa.vercel.app",
-    ],
+    origin: ["https://price-tracker-frontend-ecru.vercel.app"],
     methods: ["GET", "POST", "DELETE", "PUT", "POST"],
     credentials: true,
   })
