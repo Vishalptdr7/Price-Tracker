@@ -7,12 +7,20 @@ import { startCronJob } from "../cron/priceChecker.js";
 
 const DBconnection = async () => {
   try {
-    const connectionData = await mongoose.connect(process.env.MONGODB_URI);
-    console.log(`Database Connected: ${connectionData.connection.host}`);
-    startCronJob(); // Start the cron job after successful DB connection
+    const connectionData = await mongoose.connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log(`✅ Database Connected: ${connectionData.connection.host}`);
+
+    // Start cron job only after DB is confirmed up
+    startCronJob();
   } catch (error) {
-    console.error(error);
+    console.error("❌ MongoDB Connection Error:", error.message);
     throw error;
   }
 };
+
 export default DBconnection;
+
