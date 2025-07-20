@@ -28,8 +28,8 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.listen(process.env.PORT, () => {
-  console.log("Server Started on Port " + process.env.PORT);
+app.listen(process.env.PORT || 8080, () => {
+  console.log("Server Started on Port " + (process.env.PORT || 8080));
   DBconnection()
     .then(() => {
       console.log("Database Connected");
