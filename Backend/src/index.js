@@ -5,8 +5,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 
+
 dotenv.config({
-  path: "./env",
+  path: "../env",
 });
 const app = express();
 
@@ -26,15 +27,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.listen(process.env.PORT || 8080, () => {
-  console.log("Server Started on Port " + (process.env.PORT || 8080));
+  console.log("🚀 Server Started on Port " + (process.env.PORT || 8080));
+  console.log("🌐 Connecting to MongoDB...");
   DBconnection()
-    .then(() => {
-      console.log("Database Connected");
-    })
-    .catch((err) => {
-      console.error("Database Connection Failed: ", err);
-    });
+    .then(() => console.log("✅ Database Connected"))
+    .catch((err) => console.error("❌ DB Connection Failed:", err));
 });
+console.log(process.env.MONGODB_URI);
+
 
 app.get("/", (req, res) => {
   res.send("Welcome to Price Tracker API", {
