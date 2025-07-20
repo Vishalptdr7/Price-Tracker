@@ -7,10 +7,7 @@ import { startCronJob } from "../cron/priceChecker.js";
 
 const DBconnection = async () => {
   try {
-    const connectionData = await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    const connectionData = await mongoose.connect(process.env.MONGODB_URI);
 
     console.log(`✅ Database Connected: ${connectionData.connection.host}`);
 
