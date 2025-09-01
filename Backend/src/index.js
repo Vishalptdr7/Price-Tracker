@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["https://price-tracker-frontend-ecru.vercel.app"],
+    origin: ["http://localhost:5173", ],
     methods: ["GET", "POST", "DELETE", "PUT", "POST"],
     credentials: true,
   })
