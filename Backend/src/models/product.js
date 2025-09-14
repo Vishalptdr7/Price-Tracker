@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 const productSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user", // matches the name used in `mongoose.model("user", ...)`
+    ref: "User", // matches the name used in `mongoose.model("user", ...)`
     required: true,
   },
   url: { type: String, required: true },
